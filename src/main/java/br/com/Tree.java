@@ -5,50 +5,64 @@ import java.util.Random;
 public class Tree {
     Node root = null;
 
-    void insert(int info, Node place){
+    void insert(int index, String info , boolean hasTreasure, boolean isDeathIsland ){
+      root = insertRecursive(root, index, info, hasTreasure, isDeathIsland);
+    }
 
-        if(place == null){
-            root = new Node(info);
-        } else  if(info < place.info){
-            if(place.left == null){
-                place.left = new Node(info);
-            } else {
-                insert(info, place.left);
+    Node insertRecursive(Node node, int index, String info, boolean hasTreasure, boolean isDeathIsland){
+        if(node == null){
+           return node = new Node(index, info, hasTreasure, isDeathIsland);
+        }
+        Random random = new Random();
+
+        if(random.nextBoolean()) hasTreasure = true;
+        if(random.nextBoolean()) isDeathIsland = true;
+
+        if(random.nextBoolean()){
+            node.left = insertRecursive(node.left, index, info, hasTreasure, isDeathIsland);
+        }else {
+            node.right = insertRecursive(node.right, index, info, hasTreasure, isDeathIsland);
+        }
+
+        return node;
+
+    }
+
+    void move(){
+        moveRecursive(root);
+    }
+
+    void moveRecursive(Node node){
+        if(node != null){
+            System.out.println("Visitando a ilha :" + node.info);
+            if(node.hasTreasure){
+                System.out.println("Tesouro enconrado na ilha: " + node.info);
+                return;
+            }else if(node.isDeathIsland){
+                System.out.println("Parou na ilha da morte, você morreu !" + node.info);
+                moveRestart();
             }
-        } else if (info > place.info){
-            if (place.right == null){
-                place.right = new Node(info);
-            } else {
-                insert(info, place.right);
-            }
+
+            moveRecursive(node.left);
+            moveRecursive(node.right);
         }
     }
 
+    void moveRestart() {
 
-    Node getRandomNode(Node place) {
-        Random rand = new Random();
-        int chosenIndex = rand.nextInt(countNodes(place)) + 1;
-        return getNodeByIndex(place, chosenIndex);
+        root = null;
+
+        insert(1,"Baia do Naufrágio",false,false);
+        insert(2,"Ilha dos Piratas",false,false);
+        insert(3,"Ilha do Dragão",false,false);
+        insert(4,"Ilha dos Peixes",false,false);
+        insert(5,"Ilha dos Contrabandistas",false,false);
+        insert(6,"Ilha da Caveira",false,false);
+        insert(7,"Ilha da Cobra",false,false);
+
+        move();
     }
 
-    private int countNodes(Node place){
-        if(place == null) return 0;
-        return 1 + countNodes(place.left) + countNodes(place.right);
-    }
-
-    private Node getNodeByIndex(Node place, int index){
-        if (place == null) return null;
-
-        int leftCount = countNodes(place.left);
-        if (index == leftCount + 1){
-            return place;
-        } else if (index <= leftCount) {
-            return getNodeByIndex(place.left, index);
-        } else {
-            return getNodeByIndex(place.right, index);
-        }
-
-    }
 
 
 

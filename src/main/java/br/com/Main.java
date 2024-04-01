@@ -1,31 +1,22 @@
 package br.com;
 
+import java.util.List;
 import java.util.Random;
 
 public class Main {
     public static void main(String[] args) {
 
-        Random rand = new Random();
         Tree tree = new Tree();
 
+        tree.insert(1,"Baia do Naufrágio",false,false);
+        tree.insert(2,"Ilha dos Piratas",false,false);
+        tree.insert(3,"Ilha do Dragão",false,false);
+        tree.insert(4,"Ilha dos Peixes",false,false);
+        tree.insert(5,"Ilha dos Contrabandistas",false,false);
+        tree.insert(6,"Ilha da Caveira",false,false);
+        tree.insert(7,"Ilha da Cobra",false,false);
 
-        for (int i = 0; i < 10; i++){
-            tree.insert(rand.nextInt(100), tree.root );
-        }
+        tree.move();
 
-        Node startingIsland = tree.getRandomNode(tree.root);
-        Automaton automaton = new Automaton(startingIsland);
-        Node treasureIsland = tree.getRandomNode(tree.root);
-        treasureIsland.setHasTreasure();
-        exploreIslands(automaton);
-
-
-    }
-    private static void exploreIslands(Automaton automaton){
-        while (!automaton.getCurrentIsland().hasTreasure()){
-            System.out.println("Explorando a ilha " + automaton.getCurrentIsland().info);
-            automaton.move();
-        }
-        System.out.println("Tesouro encontrado na ilha " + automaton.getCurrentIsland().info + " ! Parabéns");
     }
 }
