@@ -1,4 +1,5 @@
 package br.com;
+
 public class Node {
     private final Island island;
     Node left, right;
